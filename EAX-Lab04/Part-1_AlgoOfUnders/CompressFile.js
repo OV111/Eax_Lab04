@@ -9,6 +9,8 @@
 // Target: Reduce each example by 40-60%
 // ========================================
 
+const { count } = require("console");
+
 // ========================================
 // EXAMPLE 1: E-COMMERCE ORDER PROCESSOR
 // ========================================
@@ -53,70 +55,36 @@ function processOrders_VERBOSE(orders) {
 
 function analyzeStudents_VERBOSE(students) {
   let results = [];
-
-  for (let i = 0; i < students.length; i++) {
-    let student = students[i];
-
-    // Calculate average
-    let total = 0;
-    let count = 0;
-    for (let j = 0; j < student.grades.length; j++) {
-      total = total + student.grades[j];
-      count = count + 1;
+  for (let student of students) { // or with map method
+    let total = 0, count = 0;
+    let grades = student.grades;
+    for (let grade of grades) {
+      total += grade;
+      count++;
     }
     let average = total / count;
-
-    // Determine letter grade
-    let letterGrade = "";
-    if (average >= 90) {
-      letterGrade = "A";
-    } else if (average >= 80) {
-      letterGrade = "B";
-    } else if (average >= 70) {
-      letterGrade = "C";
-    } else if (average >= 60) {
-      letterGrade = "D";
-    } else {
-      letterGrade = "F";
-    }
-
-    // Check if passing
-    let isPassing = false;
-    if (average >= 60) {
-      isPassing = true;
-    } else {
-      isPassing = false;
-    }
-
-    // Find highest grade
-    let highest = student.grades[0];
-    for (let k = 1; k < student.grades.length; k++) {
-      if (student.grades[k] > highest) {
-        highest = student.grades[k];
-      }
-    }
-
-    // Find lowest grade
-    let lowest = student.grades[0];
-    for (let m = 1; m < student.grades.length; m++) {
-      if (student.grades[m] < lowest) {
-        lowest = student.grades[m];
-      }
-    }
-
-    // Create result object
-    let studentResult = {
+    let letterGrade =
+      average >= 90
+        ? (letterGrade = "A")
+        : average >= 80
+        ? (letterGrade = "B")
+        : average >= 70
+        ? (letterGrade = "C")
+        : average >= 60
+        ? (letterGrade = "D")
+        : "F";
+    let isPassing = average >= 60 ? true : false;
+    let highest = Math.max(...grades);
+    let lowest = Math.min(...grades);
+    results.push({
       name: student.name,
-      average: average,
-      letterGrade: letterGrade,
+      average,
+      letterGrade,
       passing: isPassing,
-      highest: highest,
-      lowest: lowest,
-    };
-
-    results.push(studentResult);
+      highest,
+      lowest,
+    });
   }
-
   return results;
 }
 
