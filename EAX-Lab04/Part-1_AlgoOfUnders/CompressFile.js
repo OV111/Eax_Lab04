@@ -55,8 +55,10 @@ function processOrders_VERBOSE(orders) {
 
 function analyzeStudents_VERBOSE(students) {
   let results = [];
-  for (let student of students) { // or with map method
-    let total = 0, count = 0;
+  for (let student of students) {
+    // or with map method
+    let total = 0,
+      count = 0;
     let grades = student.grades;
     for (let grade of grades) {
       total += grade;
@@ -64,15 +66,10 @@ function analyzeStudents_VERBOSE(students) {
     }
     let average = total / count;
     let letterGrade =
-      average >= 90
-        ? (letterGrade = "A")
-        : average >= 80
-        ? (letterGrade = "B")
-        : average >= 70
-        ? (letterGrade = "C")
-        : average >= 60
-        ? (letterGrade = "D")
-        : "F";
+      average >= 90 ? "A": average >= 80
+        ? "B" : average >= 70
+        ? "C" : average >= 60
+        ? "D" : "F";
     let isPassing = average >= 60 ? true : false;
     let highest = Math.max(...grades);
     let lowest = Math.min(...grades);
@@ -91,7 +88,6 @@ function analyzeStudents_VERBOSE(students) {
 // ========================================
 // TEST DATA
 // ========================================
-
 const sampleOrders = [
   {
     id: "ORD-001",
@@ -119,13 +115,14 @@ const sampleOrders = [
     ],
   },
 ];
-
+// console.log(processOrders_VERBOSE(sampleOrders))
 const sampleStudents = [
   { name: "Alice", grades: [85, 90, 88, 92, 87] },
   { name: "Bob", grades: [72, 68, 75, 70, 73] },
   { name: "Charlie", grades: [55, 58, 52, 60, 54] },
   { name: "Diana", grades: [95, 98, 96, 99, 97] },
 ];
+// console.log(analyzeStudents_VERBOSE(sampleStudents));
 
 // ========================================
 // YOUR TASK:
