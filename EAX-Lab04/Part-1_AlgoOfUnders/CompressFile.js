@@ -17,27 +17,22 @@
 
 function processOrders_VERBOSE(orders) {
   let result = [];
-
   for (let order of orders) {
     // Check if order is valid
     if (!order.items || order.items.length === 0) {
       continue;
     }
-
     // Calculate total
     let total = 0;
     for (let item of order.items) {
       total += item.price * item.quantity;
     }
-
     // Apply discount
     let discount = total > 100 ? total * 0.1 : total > 50 ? total * 0.05 : 0;
     let finalTotal = total - discount;
-
     // Determine shipping
     let shipping = finalTotal < 50 ? 10 : 0;
     let grandTotal = finalTotal + shipping;
-
     // Create result object
     result.push({
       orderId: order.id,
