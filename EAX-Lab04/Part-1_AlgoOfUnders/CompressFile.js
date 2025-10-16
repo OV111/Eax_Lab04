@@ -6,7 +6,6 @@
 // - Same functionality
 // - Readability
 // - Clarity
-//
 // Target: Reduce each example by 40-60%
 // ========================================
 
