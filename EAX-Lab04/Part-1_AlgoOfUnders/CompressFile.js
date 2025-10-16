@@ -17,60 +17,36 @@
 
 function processOrders_VERBOSE(orders) {
   let result = [];
-  
-  for (let i = 0; i < orders.length; i++) {
-    let order = orders[i];
-    
+
+  for (let order of orders) {
     // Check if order is valid
-    let isValid = false;
-    if (order.items && order.items.length > 0) {
-      isValid = true;
+    if (!order.items || order.items.length === 0) {
+      continue;
     }
-    
-    if (isValid === true) {
-      // Calculate total
-      let total = 0;
-      for (let j = 0; j < order.items.length; j++) {
-        let item = order.items[j];
-        let itemTotal = item.price * item.quantity;
-        total = total + itemTotal;
-      }
-      
-      // Apply discount
-      let discount = 0;
-      if (total > 100) {
-        discount = total * 0.1;
-      } else if (total > 50) {
-        discount = total * 0.05;
-      } else {
-        discount = 0;
-      }
-      
-      let finalTotal = total - discount;
-      
-      // Determine shipping
-      let shipping = 0;
-      if (finalTotal < 50) {
-        shipping = 10;
-      } else {
-        shipping = 0;
-      }
-      
-      let grandTotal = finalTotal + shipping;
-      
-      // Create result object
-      let processedOrder = {
-        orderId: order.id,
-        subtotal: total,
-        discount: discount,
-        shipping: shipping,
-        total: grandTotal
-      };
-      
-      result.push(processedOrder);
+
+    // Calculate total
+    let total = 0;
+    for (let item of order.items) {
+      total += item.price * item.quantity;
     }
+
+    // Apply discount
+    let discount = total > 100 ? total * 0.1 : total > 50 ? total * 0.05 : 0;
+    let finalTotal = total - discount;
+
+    // Determine shipping
+    let shipping = finalTotal < 50 ? 10 : 0;
+    let grandTotal = finalTotal + shipping;
+
+    // Create result object
+    result.push({
+      orderId: order.id,
+      subtotal: total,
+      discount: discount,
+      shipping: shipping,
+      total: grandTotal,
+    });
   }
-  
   return result;
 }
 
@@ -82,10 +58,10 @@ function processOrders_VERBOSE(orders) {
 
 function analyzeStudents_VERBOSE(students) {
   let results = [];
-  
+
   for (let i = 0; i < students.length; i++) {
     let student = students[i];
-    
+
     // Calculate average
     let total = 0;
     let count = 0;
@@ -94,21 +70,21 @@ function analyzeStudents_VERBOSE(students) {
       count = count + 1;
     }
     let average = total / count;
-    
+
     // Determine letter grade
-    let letterGrade = '';
+    let letterGrade = "";
     if (average >= 90) {
-      letterGrade = 'A';
+      letterGrade = "A";
     } else if (average >= 80) {
-      letterGrade = 'B';
+      letterGrade = "B";
     } else if (average >= 70) {
-      letterGrade = 'C';
+      letterGrade = "C";
     } else if (average >= 60) {
-      letterGrade = 'D';
+      letterGrade = "D";
     } else {
-      letterGrade = 'F';
+      letterGrade = "F";
     }
-    
+
     // Check if passing
     let isPassing = false;
     if (average >= 60) {
@@ -116,7 +92,7 @@ function analyzeStudents_VERBOSE(students) {
     } else {
       isPassing = false;
     }
-    
+
     // Find highest grade
     let highest = student.grades[0];
     for (let k = 1; k < student.grades.length; k++) {
@@ -124,7 +100,7 @@ function analyzeStudents_VERBOSE(students) {
         highest = student.grades[k];
       }
     }
-    
+
     // Find lowest grade
     let lowest = student.grades[0];
     for (let m = 1; m < student.grades.length; m++) {
@@ -132,7 +108,7 @@ function analyzeStudents_VERBOSE(students) {
         lowest = student.grades[m];
       }
     }
-    
+
     // Create result object
     let studentResult = {
       name: student.name,
@@ -140,12 +116,12 @@ function analyzeStudents_VERBOSE(students) {
       letterGrade: letterGrade,
       passing: isPassing,
       highest: highest,
-      lowest: lowest
+      lowest: lowest,
     };
-    
+
     results.push(studentResult);
   }
-  
+
   return results;
 }
 
@@ -155,37 +131,37 @@ function analyzeStudents_VERBOSE(students) {
 
 const sampleOrders = [
   {
-    id: 'ORD-001',
+    id: "ORD-001",
     items: [
-      { name: 'Laptop', price: 800, quantity: 1 },
-      { name: 'Mouse', price: 25, quantity: 2 }
-    ]
+      { name: "Laptop", price: 800, quantity: 1 },
+      { name: "Mouse", price: 25, quantity: 2 },
+    ],
   },
   {
-    id: 'ORD-002',
+    id: "ORD-002",
     items: [
-      { name: 'Keyboard', price: 60, quantity: 1 },
-      { name: 'Cable', price: 10, quantity: 3 }
-    ]
+      { name: "Keyboard", price: 60, quantity: 1 },
+      { name: "Cable", price: 10, quantity: 3 },
+    ],
   },
   {
-    id: 'ORD-003',
-    items: []
+    id: "ORD-003",
+    items: [],
   },
   {
-    id: 'ORD-004',
+    id: "ORD-004",
     items: [
-      { name: 'Monitor', price: 300, quantity: 1 },
-      { name: 'Stand', price: 50, quantity: 1 }
-    ]
-  }
+      { name: "Monitor", price: 300, quantity: 1 },
+      { name: "Stand", price: 50, quantity: 1 },
+    ],
+  },
 ];
 
 const sampleStudents = [
-  { name: 'Alice', grades: [85, 90, 88, 92, 87] },
-  { name: 'Bob', grades: [72, 68, 75, 70, 73] },
-  { name: 'Charlie', grades: [55, 58, 52, 60, 54] },
-  { name: 'Diana', grades: [95, 98, 96, 99, 97] }
+  { name: "Alice", grades: [85, 90, 88, 92, 87] },
+  { name: "Bob", grades: [72, 68, 75, 70, 73] },
+  { name: "Charlie", grades: [55, 58, 52, 60, 54] },
+  { name: "Diana", grades: [95, 98, 96, 99, 97] },
 ];
 
 // ========================================
