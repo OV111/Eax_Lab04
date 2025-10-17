@@ -29,9 +29,8 @@ class Student {
     for (let i = 0; i < this.grades.length; i++) {
       const grade = this.grades[i];
       totalPoints += grade.score * grade.credits;
-      totalCredits = grade.credits; 
+      totalCredits += grade.credits; // bug 1 
     }
-
     return totalCredits > 0 ? (totalPoints / totalCredits).toFixed(2) : 0;
   }
 
@@ -115,7 +114,7 @@ class GradeTracker {
     const sorted = [...this.students].sort((a, b) => {
       const gpaA = parseFloat(a.getGPA());
       const gpaB = parseFloat(b.getGPA());
-      return gpaA - gpaB; 
+      return gpaB - gpaA ;  // bug2
     });
     return sorted.slice(0, count);
   }
@@ -179,7 +178,7 @@ function generateReport(tracker) {
 function enrollStudentsWithGrades(tracker, studentData) {
   const enrolled = [];
 
-  for (let i = 0; i <= studentData.length; i++) { 
+  for (let i = 0; i < studentData.length; i++) {  // bug 3
     const data = studentData[i];
     const student = tracker.addStudent(data.name, data.major);
     
@@ -246,9 +245,13 @@ const report = generateReport(highSchool);
 console.log(report);
 
 console.log("Science majors:");
+
+// studentsToEnroll.forEach(element => {
+//    console.log(element.major) 
+// })
 const scienceStudents = highSchool.getStudentsByMajor("Science");
 scienceStudents.forEach(student => {
-  console.log(`  ${student.name} - GPA: ${student.getGPA()}`);
+  console.log(` ${student.name} - Majors: ${student.major} - GPA: ${student.getGPA()}`);
 });
 
 console.log("\n=== Program Complete ===");
